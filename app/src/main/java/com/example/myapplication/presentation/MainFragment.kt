@@ -15,6 +15,7 @@ import com.example.myapplication.presentation.model.CountriesUiState
 import com.example.myapplication.utils.ViewExtensions.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -24,7 +25,8 @@ class MainFragment : Fragment() {
     
     private lateinit var viewModel: MainViewModel
 
-    private lateinit var countriesAdapter: CountriesAdapter
+    @Inject
+    lateinit var countriesAdapter: CountriesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +53,6 @@ class MainFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        countriesAdapter = CountriesAdapter()
-        
         binding.rvCountries.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = countriesAdapter

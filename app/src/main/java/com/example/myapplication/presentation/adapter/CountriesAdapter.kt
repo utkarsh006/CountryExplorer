@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myapplication.databinding.ItemLayoutBinding
 import com.example.myapplication.presentation.model.CountryUiModel
+import com.example.myapplication.di.ImageLoader
+import javax.inject.Inject
 
-
-class CountriesAdapter : RecyclerView.Adapter<CountriesAdapter.CountryViewHolder>() {
+class CountriesAdapter @Inject constructor(
+    private val imageLoader: ImageLoader
+) : RecyclerView.Adapter<CountriesAdapter.CountryViewHolder>() {
 
     private val diffCallback = object : DiffUtil.ItemCallback<CountryUiModel>() {
         override fun areItemsTheSame(oldItem: CountryUiModel, newItem: CountryUiModel): Boolean {
@@ -55,11 +56,7 @@ class CountriesAdapter : RecyclerView.Adapter<CountriesAdapter.CountryViewHolder
                 tvDescription.text = country.description
                 tvPublishedAt.text = country.details
 
-                Glide.with(itemView.context)
-                    .load(country.imageUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .centerCrop()
-                    .into(ivArticleImage)
+                imageLoader.loadImage(ivArticleImage, country.imageUrl)
 
                 root.setOnClickListener {
                     onItemClickListener?.invoke(country)
