@@ -1,6 +1,6 @@
 package com.example.myapplication.di
 
-import com.example.myapplication.Constants.BASE_URL
+import com.example.myapplication.utils.Constants.BASE_URL
 import com.example.myapplication.data.repository.CountryRepositoryImpl
 import com.example.myapplication.domain.repository.CountryRepository
 import com.example.myapplication.data.ApiService
