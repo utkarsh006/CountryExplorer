@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -76,14 +75,35 @@ class MainFragment : Fragment() {
     private fun handleUiState(state: CountriesUiState) {
         when (state) {
             is CountriesUiState.Loading -> {
-                // show some loader
+                handleErrorUi(showProgress = true)
             }
+
             is CountriesUiState.Success -> {
+                handleErrorUi(showList = true)
                 countriesAdapter.submitList(state.countries)
             }
+
             is CountriesUiState.Error -> {
-                // show some error ui
+                handleErrorUi(
+                    showError = true,
+                    errorMessage = state.message
+                )
             }
+        }
+    }
+
+    private fun handleErrorUi(
+        showProgress: Boolean = false,
+        showList: Boolean = false,
+        showError: Boolean = false,
+        errorMessage: String? = null
+    ) {
+        binding.progressBar.visibility = if (showProgress) View.VISIBLE else View.GONE
+        binding.rvCountries.visibility = if (showList) View.VISIBLE else View.GONE
+        binding.tvError.visibility = if (showError) View.VISIBLE else View.GONE
+
+        errorMessage?.let {
+            binding.tvError.text = it
         }
     }
 
