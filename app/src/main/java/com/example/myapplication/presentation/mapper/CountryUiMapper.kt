@@ -10,11 +10,15 @@ object CountryUiMapper {
         return CountryUiModel(
             id = country.countryCode,
             title = "${country.name} - ${country.region}",
-            subtitle = "Capital: ${country.capital}",
+            subtitle = buildSubtitle(country),
             description = buildDescription(country),
             imageUrl = country.flagUrl,
             details = buildDetails(country)
         )
+    }
+    
+    private fun buildSubtitle(country: Country): String {
+        return country.capital?.let { "Capital: $it" } ?: "No capital"
     }
     
     fun mapToUiModelList(countries: List<Country>): List<CountryUiModel> {
@@ -22,11 +26,27 @@ object CountryUiMapper {
     }
     
     private fun buildDescription(country: Country): String {
-        return "Population: ${formatPopulation(country.population)} | Currency: ${country.currency} | Language: ${country.language}"
+        val parts = mutableListOf<String>()
+        
+        parts.add("Population: ${formatPopulation(country.population)}")
+        
+        country.currency?.let { parts.add("Currency: $it") }
+        country.language?.let { parts.add("Language: $it") }
+        
+        return parts.joinToString(" | ")
     }
     
     private fun buildDetails(country: Country): String {
-        return "Area: ${formatArea(country.area)} | Subregion: ${country.subregion}"
+        val parts = mutableListOf<String>()
+        
+        country.area?.let { parts.add("Area: ${formatArea(it)}") }
+        country.subregion?.let { parts.add("Subregion: $it") }
+        
+        return if (parts.isNotEmpty()) {
+            parts.joinToString(" | ")
+        } else {
+            "Additional details not available"
+        }
     }
     
     private fun formatPopulation(population: Long): String {
