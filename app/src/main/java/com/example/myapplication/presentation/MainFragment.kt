@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentMainBinding
-import com.example.myapplication.intent.MainIntent
+import com.example.myapplication.presentation.intent.MainIntent
 import com.example.myapplication.presentation.adapter.CountriesAdapter
 import com.example.myapplication.presentation.model.CountriesUiState
 import com.example.myapplication.utils.ViewExtensions.showToast

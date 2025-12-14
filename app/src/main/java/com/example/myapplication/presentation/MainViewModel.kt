@@ -3,7 +3,7 @@ package com.example.myapplication.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.domain.usecase.GetCountriesUseCase
-import com.example.myapplication.intent.MainIntent
+import com.example.myapplication.presentation.intent.MainIntent
 import com.example.myapplication.presentation.mapper.CountryUiMapper
 import com.example.myapplication.presentation.model.CountriesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

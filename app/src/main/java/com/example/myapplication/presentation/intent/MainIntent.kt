@@ -1,4 +1,4 @@
-package com.example.myapplication.intent
+package com.example.myapplication.presentation.intent
 
 sealed class MainIntent {
     object GetNews : MainIntent()
