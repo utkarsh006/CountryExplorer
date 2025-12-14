@@ -1,16 +1,15 @@
-package com.example.myapplication.ui
+package com.example.myapplication.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.adapter.NewsAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.intent.MainIntent
-import com.example.myapplication.repo.ApiState
+import com.example.myapplication.presentation.adapter.CountriesAdapter
+import com.example.myapplication.presentation.model.CountriesUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -28,30 +27,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         observeData()
 
-            lifecycleScope.launch {
-                mainViewModel.mainIntent.send(MainIntent.GetNews)
-            }
-
+        lifecycleScope.launch {
+            mainViewModel.mainIntent.send(MainIntent.GetNews)
+        }
     }
 
     private fun observeData() {
+        val adapter = CountriesAdapter()
+        binding.rvCountries.layoutManager = LinearLayoutManager(this)
+        binding.rvCountries.adapter = adapter
+
         lifecycleScope.launch {
-            mainViewModel.state.collect {
+            mainViewModel.uiState.collect {
                 when (it) {
-                    is ApiState.Loading -> {
+                    is CountriesUiState.Loading -> {
                         // load some progress bar
                     }
 
-                    is ApiState.Success -> {
-                        val recyclerView = binding.dummyTest
-                        recyclerView.layoutManager = LinearLayoutManager(this@MainActivity,LinearLayoutManager.VERTICAL,false)
-
-                        val adapter = NewsAdapter(it.data.articles)
-                        recyclerView.adapter= adapter
-
+                    is CountriesUiState.Success -> {
+                        adapter.submitList(it.countries)
                     }
 
-                    is ApiState.Error -> {
+                    is CountriesUiState.Error -> {
                         // show exception
                     }
                 }
